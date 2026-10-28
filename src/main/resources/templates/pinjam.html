@@ -1,0 +1,158 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pinjam Buku</title>
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background-color: #f9fafb;
+        color: #1f2937;
+        margin: 0;
+        padding: 40px 20px;
+      }
+      .container {
+        max-width: 680px;
+        margin: 0 auto;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 28px;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 16px;
+        margin-bottom: 20px;
+      }
+      h1 {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0;
+      }
+      .nav-group {
+        display: flex;
+        gap: 16px;
+      }
+      .nav-link {
+        font-size: 13px;
+        color: #4b5563;
+        text-decoration: none;
+      }
+      .nav-link:hover {
+        color: #111827;
+        text-decoration: underline;
+      }
+      .meta {
+        font-size: 14px;
+        color: #4b5563;
+        margin-bottom: 20px;
+      }
+      .alert {
+        background-color: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #b00020;
+        padding: 12px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .alert p {
+        margin: 0;
+      }
+      .btn-reservasi {
+        background-color: #b00020;
+        color: #ffffff;
+        text-decoration: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .btn-reservasi:hover {
+        background-color: #900018;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      th {
+        background-color: #f3f4f6;
+        font-weight: 600;
+        color: #374151;
+      }
+      button {
+        background-color: #1f2937;
+        color: #ffffff;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #374151;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Pinjam Buku</h1>
+        <div class="nav-group">
+          <a class="nav-link" th:href="@{/reservasi}">Daftar Reservasi</a>
+          <a class="nav-link" th:href="@{/stok}">Kelola Stok &rarr;</a>
+        </div>
+      </div>
+
+      <p class="meta">Anggota: <b th:text="${idAnggota}">A001</b></p>
+
+      <!-- Alur alternatif: pesan gagal + opsi reservasi -->
+      <div class="alert" th:if="${pesan}">
+        <p th:text="${pesan}">Stok buku habis</p>
+        <a
+          class="btn-reservasi"
+          th:if="${bisaReservasi}"
+          th:href="@{/reservasi(idBuku=${idBukuGagal})}"
+          >Ajukan Reservasi</a
+        >
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Judul</th>
+            <th style="width: 80px">Stok</th>
+            <th style="width: 100px">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="b : ${daftarBuku}">
+            <td th:text="${b.judul}">Judul</td>
+            <td th:text="${b.stok}">0</td>
+            <td>
+              <form th:action="@{/pinjam}" method="post" style="margin: 0">
+                <input type="hidden" name="idBuku" th:value="${b.idBuku}" />
+                <button type="submit">Pinjam</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

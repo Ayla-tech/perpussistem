@@ -1,0 +1,133 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kelola Stok Buku</title>
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background-color: #f9fafb;
+        color: #1f2937;
+        margin: 0;
+        padding: 40px 20px;
+      }
+      .container {
+        max-width: 680px;
+        margin: 0 auto;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 28px;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 16px;
+        margin-bottom: 20px;
+      }
+      h1 {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0;
+      }
+      .alert {
+        background-color: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #b00020;
+        padding: 12px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        margin-bottom: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      th {
+        background-color: #f3f4f6;
+        font-weight: 600;
+        color: #374151;
+      }
+      input[type="number"] {
+        width: 60px;
+        padding: 5px 8px;
+        border: 1px solid #d1d5db;
+        border-radius: 4px;
+        font-size: 13px;
+        margin-right: 6px;
+      }
+      button {
+        background-color: #1f2937;
+        color: #ffffff;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #374151;
+      }
+      .nav-link {
+        font-size: 13px;
+        color: #4b5563;
+        text-decoration: none;
+      }
+      .nav-link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Kelola Stok Buku</h1>
+        <a class="nav-link" th:href="@{/pinjam}">&larr; Ke Halaman Pinjam</a>
+      </div>
+
+      <div class="alert" th:if="${pesan}">
+        <p th:text="${pesan}" style="margin: 0">Pesan</p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 70px">ID</th>
+            <th>Judul</th>
+            <th style="width: 70px">Stok</th>
+            <th style="width: 180px">Tambah Stok</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="b : ${daftarBuku}">
+            <td th:text="${b.idBuku}">B001</td>
+            <td th:text="${b.judul}">Judul</td>
+            <td th:text="${b.stok}">0</td>
+            <td>
+              <form
+                th:action="@{/stok}"
+                method="post"
+                style="margin: 0; display: flex; align-items: center"
+              >
+                <input type="hidden" name="idBuku" th:value="${b.idBuku}" />
+                <input type="number" name="jumlah" value="1" min="1" />
+                <button type="submit">Tambah</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
